@@ -6,8 +6,8 @@ namespace NmmEnvironment
 {
     class Options
     {
-        [Option("plain", HelpText = "Ugly but compact CSV file.")]
-        public bool Plain { get; set; }
+        [Option('p', "pretty", HelpText = "Pretty (sort of) CSV file.")]
+        public bool Pretty { get; set; }
 
         [ValueList(typeof(List<string>), MaximumElements = 2)]
         public IList<string> ListOfFileNames { get; set; }

@@ -25,19 +25,20 @@ namespace NmmEnvironment
             string outPutFilename = nmmFileName.BaseFileName + ".csv";
 
             // requested output style
-            OutputStyle outputStyle = OutputStyle.Pretty;
-            if (options.Plain)
-                outputStyle = OutputStyle.Plain;
-
+            OutputStyle outputStyle = OutputStyle.Plain;
+            if (options.Pretty)
+                outputStyle = OutputStyle.Pretty;
             Csv csv = new Csv(outputStyle);
 
             NmmDescriptionFileParser nmmDsc = new NmmDescriptionFileParser(nmmFileName);
+            Console.WriteLine($"{nmmFileName.BaseFileName} [{nmmDsc.Procedure}]");
             int numberOfScans = nmmDsc.NumberOfScans;
             NmmEnvironmentData nmmPos;
             if (numberOfScans==1)
             {
                 nmmFileName.SetScanIndex(0);
                 nmmPos = new NmmEnvironmentData(nmmFileName);
+                Console.WriteLine($"Single scan : {nmmPos.AirTemperatureSeries.Length} samples");
                 csv.Add(nmmPos, 0);
             }
             else
@@ -46,13 +47,13 @@ namespace NmmEnvironment
                 {
                     nmmFileName.SetScanIndex(scanIndex);
                     nmmPos = new NmmEnvironmentData(nmmFileName);
+                    Console.WriteLine($"Scan #{scanIndex} : {nmmPos.AirTemperatureSeries.Length} samples");
                     csv.Add(nmmPos, scanIndex);
                 }
             }
 
-
-
             File.WriteAllText(outPutFilename, csv.GetCsvString());
+            Console.WriteLine($"{csv.RunningIndex} samples in file {outPutFilename}");
 
         }
 

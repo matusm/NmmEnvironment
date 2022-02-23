@@ -46,7 +46,7 @@ namespace NmmEnvironment
                     sb.AppendLine($"{runningIndex,5} , {scanIndex,3} , {t1:F3} , {t2:F3} , {h:F2} , {p:F0}");
                     break;
                 case OutputStyle.Plain:
-                    sb.AppendLine($"{runningIndex},{scanIndex},{t1:F4},{t2:F4},{h:F3},{p}");
+                    sb.AppendLine($"{runningIndex},{scanIndex},{t1:F3},{t2:F3},{h:F2},{p}");
                     break;
                 default:
                     break;
