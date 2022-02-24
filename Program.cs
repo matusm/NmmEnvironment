@@ -32,7 +32,7 @@ namespace NmmEnvironment
 
             NmmDescriptionFileParser nmmDsc = new NmmDescriptionFileParser(nmmFileName);
             Console.WriteLine($"{nmmFileName.BaseFileName} [{nmmDsc.Procedure}]");
-            if(nmmDsc.Procedure== MeasurementProcedure.Unknown)
+            if(nmmDsc.Procedure== MeasurementProcedure.NoFile)
                 ErrorExit("!file not found(?)", 2);
             int numberOfScans = nmmDsc.NumberOfScans;
             NmmEnvironmentData nmmPos;
