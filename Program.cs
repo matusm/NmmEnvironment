@@ -20,7 +20,7 @@ namespace NmmEnvironment
             // get the filename(s)
             string[] fileNames = options.ListOfFileNames.ToArray();
             if (fileNames.Length == 0)
-                ErrorExit("!Missing input file", 1);
+                ErrorExit("!input file not specified", 1);
             NmmFileName nmmFileName = new NmmFileName(fileNames[0]);
             string outPutFilename = nmmFileName.BaseFileName + ".csv";
 
@@ -32,6 +32,8 @@ namespace NmmEnvironment
 
             NmmDescriptionFileParser nmmDsc = new NmmDescriptionFileParser(nmmFileName);
             Console.WriteLine($"{nmmFileName.BaseFileName} [{nmmDsc.Procedure}]");
+            if(nmmDsc.Procedure== MeasurementProcedure.Unknown)
+                ErrorExit("!file not found(?)", 2);
             int numberOfScans = nmmDsc.NumberOfScans;
             NmmEnvironmentData nmmPos;
             if (numberOfScans==1)
