@@ -33,10 +33,7 @@ namespace NmmEnvironment
             }
         }
 
-        public string GetCsvString()
-        {
-            return sb.ToString();
-        }
+        public string GetCsvString() => sb.ToString();
 
         private void AddCsvLine(int runningIndex, int scanIndex, double t1, double t2, double h, double p)
         {

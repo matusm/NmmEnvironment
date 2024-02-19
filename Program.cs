@@ -29,6 +29,7 @@ namespace NmmEnvironment
             if (options.Pretty)
                 outputStyle = OutputStyle.Pretty;
             Csv csv = new Csv(outputStyle);
+            Statistics stat = new Statistics();
 
             NmmDescriptionFileParser nmmDsc = new NmmDescriptionFileParser(nmmFileName);
             Console.WriteLine($"{nmmFileName.BaseFileName} [{nmmDsc.Procedure}]");
@@ -42,6 +43,7 @@ namespace NmmEnvironment
                 nmmPos = new NmmEnvironmentData(nmmFileName);
                 Console.WriteLine($"Single scan : {nmmPos.AirTemperatureSeries.Length} samples");
                 csv.Add(nmmPos, 0);
+                stat.Update(nmmPos);
             }
             else
             {
@@ -51,11 +53,15 @@ namespace NmmEnvironment
                     nmmPos = new NmmEnvironmentData(nmmFileName);
                     Console.WriteLine($"Scan #{scanIndex} : {nmmPos.AirTemperatureSeries.Length} samples");
                     csv.Add(nmmPos, scanIndex);
+                    stat.Update(nmmPos);
                 }
             }
 
             File.WriteAllText(outPutFilename, csv.GetCsvString());
             Console.WriteLine($"{csv.RunningIndex} samples in file {outPutFilename}");
+            Console.WriteLine();
+            Console.WriteLine($"Table: {stat.SampleTemperature:F2} °C ± {stat.SampleTemperatureRange/2:F2} °C");
+            Console.WriteLine($"Air:   {stat.AirTemperature:F2} °C ± {stat.AirTemperatureRange/2:F2} °C");
 
         }
 
