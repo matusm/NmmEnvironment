@@ -22,7 +22,7 @@ namespace NmmEnvironment
             if (fileNames.Length == 0)
                 ErrorExit("!input file not specified", 1);
             NmmFileName nmmFileName = new NmmFileName(fileNames[0]);
-            string outPutFilename = nmmFileName.BaseFileName + ".csv";
+            string outPutFilename = nmmFileName.BaseFileName + "_THP.csv";
 
             // requested output style
             OutputStyle outputStyle = OutputStyle.Plain;
