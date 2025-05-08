@@ -24,11 +24,7 @@ namespace NmmEnvironment
             NmmFileName nmmFileName = new NmmFileName(fileNames[0]);
             string outPutFilename = nmmFileName.BaseFileName + "_THP.csv";
 
-            // requested output style
-            OutputStyle outputStyle = OutputStyle.Plain;
-            if (options.Pretty)
-                outputStyle = OutputStyle.Pretty;
-            Csv csv = new Csv(outputStyle);
+            Csv csv = new Csv(options.CsvStyle);
             Statistics stat = new Statistics();
 
             NmmDescriptionFileParser nmmDsc = new NmmDescriptionFileParser(nmmFileName);

@@ -9,6 +9,8 @@ namespace NmmEnvironment
         [Option('p', "pretty", HelpText = "Pretty (sort of) CSV file.")]
         public bool Pretty { get; set; }
 
+        public OutputStyle CsvStyle => Pretty ? OutputStyle.Pretty : OutputStyle.Plain;
+
         [ValueList(typeof(List<string>), MaximumElements = 2)]
         public IList<string> ListOfFileNames { get; set; }
 
