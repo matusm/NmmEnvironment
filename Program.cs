@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Bev.IO.NmmReader;
+using Bev.IO.NmmReader.scan_mode;
 
 namespace NmmEnvironment
 {
@@ -29,17 +30,25 @@ namespace NmmEnvironment
 
             NmmDescriptionFileParser nmmDsc = new NmmDescriptionFileParser(nmmFileName);
             Console.WriteLine($"{nmmFileName.BaseFileName} [{nmmDsc.Procedure}]");
-            if(nmmDsc.Procedure== MeasurementProcedure.NoFile)
+            bool hasDuration = nmmDsc.Procedure == MeasurementProcedure.Scan;
+            if (nmmDsc.Procedure == MeasurementProcedure.NoFile)
                 ErrorExit("!file not found(?)", 2);
             int numberOfScans = nmmDsc.NumberOfScans;
             NmmEnvironmentData nmmPos;
-            if (numberOfScans==1)
+            NmmIndFileParser nmmInd;
+            double scanDuration = 0.0;
+            if (numberOfScans == 1)
             {
                 nmmFileName.SetScanIndex(0);
                 nmmPos = new NmmEnvironmentData(nmmFileName);
                 Console.WriteLine($"Single scan : {nmmPos.AirTemperatureSeries.Length} samples");
                 csv.Add(nmmPos, 0);
                 stat.Update(nmmPos);
+                if (hasDuration)
+                {
+                    nmmInd = new NmmIndFileParser(nmmFileName);
+                    scanDuration = nmmInd.ScanDuration.TotalSeconds;
+                }
             }
             else
             {
@@ -50,14 +59,23 @@ namespace NmmEnvironment
                     Console.WriteLine($"Scan #{scanIndex} : {nmmPos.AirTemperatureSeries.Length} samples");
                     csv.Add(nmmPos, scanIndex);
                     stat.Update(nmmPos);
+                    if (hasDuration)
+                    {
+                        nmmInd = new NmmIndFileParser(nmmFileName);
+                        scanDuration += nmmInd.ScanDuration.TotalSeconds;
+                    }
                 }
             }
 
             File.WriteAllText(outPutFilename, csv.GetCsvString());
             Console.WriteLine($"{csv.RunningIndex} samples in file {outPutFilename}");
+            if (hasDuration && scanDuration > 0)
+            {
+                Console.WriteLine($"Total duration: {scanDuration:F0} s");
+            }
             Console.WriteLine();
-            Console.WriteLine($"Table: {stat.SampleTemperature:F2} °C ± {stat.SampleTemperatureRange/2:F2} °C");
-            Console.WriteLine($"Air:   {stat.AirTemperature:F2} °C ± {stat.AirTemperatureRange/2:F2} °C");
+            Console.WriteLine($"Table: {stat.SampleTemperature:F2} °C ± {stat.SampleTemperatureRange / 2:F2} °C");
+            Console.WriteLine($"Air:   {stat.AirTemperature:F2} °C ± {stat.AirTemperatureRange / 2:F2} °C");
 
         }
 
