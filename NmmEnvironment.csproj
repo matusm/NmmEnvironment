@@ -31,14 +31,14 @@
     <StartupObject>NmmEnvironment.MainClass</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="At.Matus.IO.NmmReader">
+      <HintPath>..\At.Matus.IO.NmmReader\At.Matus.IO.NmmReader\bin\Release\At.Matus.IO.NmmReader.dll</HintPath>
+    </Reference>
     <Reference Include="At.Matus.StatisticPod, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\At.Matus.StatisticPod\bin\Release\At.Matus.StatisticPod.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="Bev.IO.NmmReader">
-      <HintPath>..\Bev.IO.NmmReader\Bev.IO.NmmReader\bin\Release\Bev.IO.NmmReader.dll</HintPath>
-    </Reference>
     <Reference Include="CommandLine">
       <HintPath>packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
     </Reference>
