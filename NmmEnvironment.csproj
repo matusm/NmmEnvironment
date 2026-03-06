@@ -42,13 +42,20 @@
     <Reference Include="CommandLine">
       <HintPath>packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Windows.Forms.DataVisualization.Design" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Plotter\DataSeries.cs" />
+    <Compile Include="Plotter\DataPoint.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Csv.cs" />
     <Compile Include="Statistics.cs" />
+    <Compile Include="Plotter\TemperaturePlotter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
