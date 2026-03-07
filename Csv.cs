@@ -8,6 +8,8 @@ namespace NmmEnvironment
         private const string celsiusSymbol = "°C";
         private readonly StringBuilder sb = new StringBuilder();
         private OutputStyle outputStyle;
+        private readonly DataSeries dsSampleTemperature = new DataSeries();
+        private readonly DataSeries dsAirTemperature = new DataSeries();
 
         public Csv(OutputStyle outputStyle)
         {
@@ -17,6 +19,8 @@ namespace NmmEnvironment
         }
 
         public int RunningIndex { get; private set; }
+        public DataSeries SampleTemperatureSeries => dsSampleTemperature;
+        public DataSeries AirTemperatureSeries => dsAirTemperature;
 
         public void Add(NmmEnvironmentData nmmPos, int scanIndex)
         {
@@ -29,6 +33,8 @@ namespace NmmEnvironment
             for (int i = 0; i < sSeries.Length; i++)
             {
                 RunningIndex++;
+                dsSampleTemperature.AddDataPoint(RunningIndex, sSeries[i]);
+                dsAirTemperature.AddDataPoint(RunningIndex, aSeries[i]);
                 AddCsvLine(RunningIndex, scanIndex, sSeries[i], aSeries[i], hSeries[i], pSeries[i]);
             }
         }

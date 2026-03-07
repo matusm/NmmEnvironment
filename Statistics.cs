@@ -1,5 +1,6 @@
 ﻿using At.Matus.StatisticPod;
 using At.Matus.IO.NmmReader;
+using System;
 
 namespace NmmEnvironment
 {
@@ -9,6 +10,8 @@ namespace NmmEnvironment
         public double AirTemperature => stpTa.AverageValue;
         public double SampleTemperatureRange => stpTs.Range;
         public double AirTemperatureRange => stpTa.Range;
+        public double MinimumTemperature => Math.Min(stpTs.MinimumValue, stpTa.MinimumValue);
+        public double MaximumTemperature => Math.Max(stpTs.MaximumValue, stpTa.MaximumValue);
 
         public void Update(NmmEnvironmentData nmmPos)
         {

@@ -12,31 +12,20 @@ namespace NmmEnvironment
         private static readonly int _chartWidth = 1000;
         private static readonly int _chartHeight = 600;
         private readonly DataSeries[] _data;
-        private readonly double _XStart;
-        private readonly double _xStopX;
+        private readonly double _xStart = 0;
+        private readonly double _xStop;
         private readonly double _yStart;
         private readonly double _yStop;
         private readonly double _xInterval = 50;
         private readonly double _yInterval;
 
-        public TemperaturePlotter(DataSeries[] data)
+        public TemperaturePlotter(DataSeries[] data, double minTemp, double maxTemp)
         {
-            EstimatePlotParameters();
             _data = data;
-
-        }
-
-        private void EstimatePlotParameters()
-        {
-            for (int index = 0; index < _data.Length; index++)
-            {
-                double xMin = 0;
-                double xMax = _data[index].Times.Length;
-                double yMax = _data[index].Values.Max();
-                double yMin = _data[index].Values.Min();
-            }
-
-            throw new NotImplementedException();
+            _yStart= (int)minTemp;
+            _yStop = (int)maxTemp + 1;
+            _xStop = _data[0].Times.Length;
+            _yInterval = 0.5;
         }
 
         private Form CreateTransmissionChartForm(string titleText)
@@ -50,7 +39,7 @@ namespace NmmEnvironment
             Title title = new Title();
             Label label = new Label();
             form.Controls.Add(chart);
-            form.Text = "Filter Transmission Plot";
+            form.Text = "NMM Temperature Plot";
             form.Size = new Size(formWidth, formHeight);
             title.Text = titleText;
             title.Font = new Font("Arial", 14, FontStyle.Bold);
@@ -62,7 +51,7 @@ namespace NmmEnvironment
                 series[index] = new Series();
                 chart.Series.Add(series[index]);
                 series[index].Points.DataBindXY(_data[index].Times, _data[index].Values);
-                series[index].Name = $"Sample {index + 1}";
+                series[index].Name = $"Thermometer {index + 1}";
                 series[index].Color = Color.FromArgb((index * 70) % 256, (index * 130) % 256, (index * 200) % 256);
             }
             foreach (var s in chart.Series)
@@ -77,8 +66,8 @@ namespace NmmEnvironment
             // x-Axis settings
             chartArea.Axes[0].Title = "Index";
             chartArea.Axes[0].TitleFont = new Font("Arial", 12, FontStyle.Regular);
-            chartArea.Axes[0].Minimum = _XStart;
-            chartArea.Axes[0].Maximum = _xStopX;
+            chartArea.Axes[0].Minimum = _xStart;
+            chartArea.Axes[0].Maximum = _xStop;
             chartArea.Axes[0].Interval = _xInterval;
             chartArea.Axes[0].MajorGrid.Interval = _xInterval;
             chartArea.Axes[0].MajorTickMark.Interval = _xInterval;

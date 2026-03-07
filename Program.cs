@@ -24,6 +24,7 @@ namespace NmmEnvironment
                 ErrorExit("!input file not specified", 1);
             NmmFileName nmmFileName = new NmmFileName(fileNames[0]);
             string outPutFilename = nmmFileName.BaseFileName + "_THP.csv";
+            string plotFilename = nmmFileName.BaseFileName + "_THP.png";
 
             Csv csv = new Csv(options.CsvStyle);
             Statistics stat = new Statistics();
@@ -76,6 +77,13 @@ namespace NmmEnvironment
             Console.WriteLine();
             Console.WriteLine($"Table: {stat.SampleTemperature:F2} °C ± {stat.SampleTemperatureRange / 2:F2} °C");
             Console.WriteLine($"Air:   {stat.AirTemperature:F2} °C ± {stat.AirTemperatureRange / 2:F2} °C");
+
+            // and now the plot
+            DataSeries[] dataSeries = new DataSeries[] { csv.SampleTemperatureSeries, csv.AirTemperatureSeries };
+            TemperaturePlotter plotter = new TemperaturePlotter(dataSeries, stat.MinimumTemperature, stat.MaximumTemperature);
+
+            plotter.SaveTransmissionChart("Temperature Plot", plotFilename);
+            plotter.ShowTransmissionChart("Temperature Plot");
 
         }
 
