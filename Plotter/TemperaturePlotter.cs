@@ -12,20 +12,22 @@ namespace NmmEnvironment
         private static readonly int _chartWidth = 1000;
         private static readonly int _chartHeight = 600;
         private readonly DataSeries[] _data;
-        private readonly double _xStart = 0;
+        private readonly double _xStart;
         private readonly double _xStop;
         private readonly double _yStart;
         private readonly double _yStop;
-        private readonly double _xInterval = 50;
+        private readonly double _xInterval;
         private readonly double _yInterval;
 
         public TemperaturePlotter(DataSeries[] data, double minTemp, double maxTemp)
         {
             _data = data;
-            _yStart= (int)minTemp;
-            _yStop = (int)maxTemp + 1;
+            _yStart= (int)(minTemp*10) / 10.0;
+            _yStop = ((int)(maxTemp*10)+1) / 10.0;
+            _xStart = 0;
             _xStop = _data[0].Times.Length;
-            _yInterval = 0.5;
+            _yInterval = 0.1;
+            _xInterval = (int)(_xStop / 10.0);
         }
 
         private Form CreateTransmissionChartForm(string titleText)
@@ -46,13 +48,27 @@ namespace NmmEnvironment
             chart.ChartAreas.Add(chartArea);
             chart.Titles.Add(title);
             chart.Dock = DockStyle.Fill;
+            chart.Legends.Add(new Legend());
             for (int index = 0; index < series.Length; index++)
             {
                 series[index] = new Series();
                 chart.Series.Add(series[index]);
                 series[index].Points.DataBindXY(_data[index].Times, _data[index].Values);
-                series[index].Name = $"Thermometer {index + 1}";
-                series[index].Color = Color.FromArgb((index * 70) % 256, (index * 130) % 256, (index * 200) % 256);
+                if (index == 0)
+                {
+                    series[index].Name = $"Sample temperature";
+                    series[index].Color = Color.FromArgb(255, 0, 0);
+                }
+                else if (index == 1)
+                {
+                    series[index].Name = $"Air temperature";
+                    series[index].Color = Color.FromArgb(0, 0, 255);
+                }
+                else
+                {
+                    series[index].Name = $"Sensor {index + 1}";
+                    series[index].Color = Color.FromArgb((index * 70) % 256, (index * 130) % 256, (index * 200) % 256);
+                }
             }
             foreach (var s in chart.Series)
             {
@@ -64,7 +80,7 @@ namespace NmmEnvironment
                 s.LegendText = s.Name;
             }
             // x-Axis settings
-            chartArea.Axes[0].Title = "Index";
+            chartArea.Axes[0].Title = "Profile #";
             chartArea.Axes[0].TitleFont = new Font("Arial", 12, FontStyle.Regular);
             chartArea.Axes[0].Minimum = _xStart;
             chartArea.Axes[0].Maximum = _xStop;
@@ -79,6 +95,8 @@ namespace NmmEnvironment
             chartArea.Axes[1].Interval = _yInterval;
             chartArea.Axes[1].MajorGrid.Interval = _yInterval;
             chartArea.Axes[1].MajorTickMark.Interval = _yInterval;
+            chartArea.Axes[1].IsLabelAutoFit = true;
+            chartArea.Axes[1].LabelStyle.Format = "F1";
             return form;
         }
 
