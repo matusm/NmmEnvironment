@@ -4,10 +4,15 @@ using CommandLine.Text;
 
 namespace NmmEnvironment
 {
-    class Options
+    public class Options
     {
         [Option('p', "pretty", HelpText = "Pretty (sort of) CSV file.")]
         public bool Pretty { get; set; }
+
+        [Option("noplot", HelpText = "Do not generate plot.")]
+        public bool NoPlot { get; set; }
+
+        public bool Plot => !NoPlot;
 
         public OutputStyle CsvStyle => Pretty ? OutputStyle.Pretty : OutputStyle.Plain;
 

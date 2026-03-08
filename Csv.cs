@@ -46,10 +46,10 @@ namespace NmmEnvironment
             switch (outputStyle)
             {
                 case OutputStyle.Pretty:
-                    sb.AppendLine($"{runningIndex,5} , {scanIndex,3} , {t1:F3} , {t2:F3} , {h:F2} , {p:F0}");
+                    sb.AppendLine($"{runningIndex,5} , {scanIndex,3} , {t1,6:F3} , {t2,6:F3} , {h,5:F2} , {p,6:F0}");
                     break;
                 case OutputStyle.Plain:
-                    sb.AppendLine($"{runningIndex},{scanIndex},{t1:F3},{t2:F3},{h:F2},{p}");
+                    sb.AppendLine($"{runningIndex},{scanIndex},{t1:F3},{t2:F3},{h:F2},{p:F0}");
                     break;
                 default:
                     break;

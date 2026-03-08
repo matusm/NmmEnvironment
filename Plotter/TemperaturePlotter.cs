@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
@@ -48,7 +46,10 @@ namespace NmmEnvironment
             chart.ChartAreas.Add(chartArea);
             chart.Titles.Add(title);
             chart.Dock = DockStyle.Fill;
-            chart.Legends.Add(new Legend());
+            var legend = new Legend();
+            legend.Font = new Font("Arial", 12, FontStyle.Regular);
+            legend.Docking = Docking.Right;
+            chart.Legends.Add(legend);
             for (int index = 0; index < series.Length; index++)
             {
                 series[index] = new Series();

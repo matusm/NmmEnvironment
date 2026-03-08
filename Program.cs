@@ -79,11 +79,14 @@ namespace NmmEnvironment
             Console.WriteLine($"Air:   {stat.AirTemperature:F2} °C ± {stat.AirTemperatureRange / 2:F2} °C");
 
             // and now the plot
-            DataSeries[] dataSeries = new DataSeries[] { csv.SampleTemperatureSeries, csv.AirTemperatureSeries };
-            TemperaturePlotter plotter = new TemperaturePlotter(dataSeries, stat.MinimumTemperature, stat.MaximumTemperature);
-
-            plotter.SaveTransmissionChart("Temperature Plot", plotFilename);
-            plotter.ShowTransmissionChart("Temperature Plot");
+            if (options.Plot)
+            {
+                DataSeries[] dataSeries = new DataSeries[] { csv.SampleTemperatureSeries, csv.AirTemperatureSeries };
+                TemperaturePlotter plotter = new TemperaturePlotter(dataSeries, stat.MinimumTemperature, stat.MaximumTemperature);
+                string plotTitle = $"{nmmFileName.BaseFileName} - Sample chamber temperatures";
+                plotter.SaveTransmissionChart(plotTitle, plotFilename);
+                plotter.ShowTransmissionChart(plotTitle);
+            }
 
         }
 
