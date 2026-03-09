@@ -23,7 +23,7 @@ namespace NmmEnvironment
             if (fileNames.Length == 0)
                 ErrorExit("!input file not specified", 1);
             NmmFileName nmmFileName = new NmmFileName(fileNames[0]);
-            string outPutFilename = nmmFileName.BaseFileName + "_THP.csv";
+            string outputFilename = nmmFileName.BaseFileName + "_THP.csv";
             string plotFilename = nmmFileName.BaseFileName + "_THP.png";
 
             Csv csv = new Csv(options.CsvStyle);
@@ -38,6 +38,13 @@ namespace NmmEnvironment
             NmmEnvironmentData nmmPos;
             NmmIndFileParser nmmInd;
             double scanDuration = 0.0;
+            if (numberOfScans == 0)
+            {
+                nmmPos = new NmmEnvironmentData(nmmFileName);
+                Console.WriteLine($"No scan : {nmmPos.AirTemperatureSeries.Length} samples");
+                csv.Add(nmmPos, 0);
+                stat.Update(nmmPos);
+            }
             if (numberOfScans == 1)
             {
                 nmmFileName.SetScanIndex(0);
@@ -51,7 +58,7 @@ namespace NmmEnvironment
                     scanDuration = nmmInd.ScanDuration.TotalSeconds;
                 }
             }
-            else
+            if (numberOfScans > 1)
             {
                 for (int scanIndex = 1; scanIndex <= numberOfScans; scanIndex++)
                 {
@@ -68,8 +75,8 @@ namespace NmmEnvironment
                 }
             }
 
-            File.WriteAllText(outPutFilename, csv.GetCsvString());
-            Console.WriteLine($"{csv.RunningIndex} data points in file {outPutFilename}");
+            File.WriteAllText(outputFilename, csv.GetCsvString());
+            Console.WriteLine($"{csv.RunningIndex} data points in file {outputFilename}");
             if (hasDuration && scanDuration > 0)
             {
                 Console.WriteLine($"Total duration: {scanDuration:F0} s");

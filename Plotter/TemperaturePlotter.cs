@@ -7,7 +7,7 @@ namespace NmmEnvironment
 {
     public class TemperaturePlotter
     {
-        private static readonly int _chartWidth = 1000;
+        private static readonly int _chartWidth = 1200;
         private static readonly int _chartHeight = 600;
         private readonly DataSeries[] _data;
         private readonly double _xStart;
@@ -81,7 +81,7 @@ namespace NmmEnvironment
                 s.LegendText = s.Name;
             }
             // x-Axis settings
-            chartArea.Axes[0].Title = "Profile #";
+            chartArea.Axes[0].Title = "Data point #";
             chartArea.Axes[0].TitleFont = new Font("Arial", 12, FontStyle.Regular);
             chartArea.Axes[0].Minimum = _xStart;
             chartArea.Axes[0].Maximum = _xStop;
