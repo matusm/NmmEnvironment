@@ -69,7 +69,7 @@ namespace NmmEnvironment
             }
 
             File.WriteAllText(outPutFilename, csv.GetCsvString());
-            Console.WriteLine($"{csv.RunningIndex} samples in file {outPutFilename}");
+            Console.WriteLine($"{csv.RunningIndex} data points in file {outPutFilename}");
             if (hasDuration && scanDuration > 0)
             {
                 Console.WriteLine($"Total duration: {scanDuration:F0} s");
@@ -79,7 +79,7 @@ namespace NmmEnvironment
             Console.WriteLine($"Air:   {stat.AirTemperature:F2} °C ± {stat.AirTemperatureRange / 2:F2} °C");
 
             // and now the plot
-            if (options.Plot)
+            if (options.Plot && csv.RunningIndex > 0)
             {
                 DataSeries[] dataSeries = new DataSeries[] { csv.SampleTemperatureSeries, csv.AirTemperatureSeries };
                 TemperaturePlotter plotter = new TemperaturePlotter(dataSeries, stat.MinimumTemperature, stat.MaximumTemperature);
